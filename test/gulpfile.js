@@ -11,16 +11,16 @@ var gulp                    = require('gulp'),
     browserSync             = require('browser-sync').create();
 
 //设置各种输入输出文件夹的位置;
-var srcScript = '../src/js/*.js',
-    dstScript = '../dist/js',
-    srcCss    = '../src/css/*.css',
-    dstCSS    = '../dist/css',
-    srcSass   = '../src/css/*.scss',
-    dstSass   = '../dist/css',
-    srcImage  = '../src/img/*.*',
-    dstImage  = '../dist/img',
-    srcHtml   = '../src/*.html',
-    dstHtml   = '../dist';    
+var srcScript               = '../src/js/*.js',
+    dstScript               = '../dist/js',
+    srcCss                  = '../src/css/*.css',
+    dstCSS                  = '../dist/css',
+    srcSass                 = '../src/css/*.scss',
+    dstSass                 = '../dist/css',
+    srcImage                = '../src/img/*.*',
+    dstImage                = '../dist/img',
+    srcHtml                 = '../src/*.html',
+    dstHtml                 = '../dist';
 
 //处理JS文件:压缩,然后换个名输出;
 //命令行使用gulp script启用此任务;
@@ -51,7 +51,13 @@ gulp.task('sass', function() {
 //图片压缩任务,支持JPEG、PNG及GIF文件;
 //命令行使用gulp jpgmin启用此任务;
 gulp.task('imgmin', function() {
-    var jpgmin = imageminJpegRecompress(),
+    var jpgmin = imageminJpegRecompress({
+            target: 0.51,
+            min: 45,
+            max: 65,
+            loops: 0,
+            progressive: false
+        }),
         pngmin = imageminOptipng({
             optimizationLevel: 3
         }),
@@ -65,9 +71,9 @@ gulp.task('imgmin', function() {
 
 //把所有html页面扔进dist文件夹(不作处理);
 //命令行使用gulp html启用此任务;
-gulp.task('html', function(){
+gulp.task('html', function() {
     gulp.src(srcHtml)
-    .pipe(gulp.dest(dstHtml));
+        .pipe(gulp.dest(dstHtml));
 });
 
 //服务器任务:以dist文件夹为基础,启动服务器;
@@ -85,7 +91,7 @@ gulp.task('auto', function() {
     gulp.watch(srcCss, ['css']);
     gulp.watch(srcSass, ['sass']);
     gulp.watch(srcImage, ['imgmin']);
-    gulp.watch(srcHtml,['html']);
+    gulp.watch(srcHtml, ['html']);
     gulp.watch('../dist/**/*.*').on('change', browserSync.reload);
 });
 
