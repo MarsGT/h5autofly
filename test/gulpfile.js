@@ -10,11 +10,21 @@ var gulp                    = require('gulp'),
     imageminGifsicle        = require('imagemin-gifsicle'),
     browserSync             = require('browser-sync').create();
 
+//设置各种输入输出文件夹的位置;
+var srcScript = '../src/js/*.js',
+    dstScript = '../dist/js',
+    srcCss    = '../src/css/*.css',
+    dstCSS    = '../dist/css',
+    srcSass   = '../src/css/*.scss',
+    dstSass   = '../dist/css',
+    srcImage  = '../src/img/*.*',
+    dstImage  = '../dist/img',
+    srcHtml   = '../src/*.html',
+    dstHtml   = '../dist';    
+
 //处理JS文件:压缩,然后换个名输出;
 //命令行使用gulp script启用此任务;
 gulp.task('script', function() {
-    var srcScript = '../src/js/*.js',
-        dstScript = '../dist/js';
     gulp.src(srcScript)
         .pipe(uglify())
         .pipe(gulp.dest(dstScript));
@@ -23,18 +33,14 @@ gulp.task('script', function() {
 //处理CSS文件:压缩,然后换个名输出;
 //命令行使用gulp css启用此任务;
 gulp.task('css', function() {
-    var srcCss = '../src/css/*.css',
-        dstCSS = '../dist/css';
     gulp.src(srcCss)
         .pipe(minifyCSS())
         .pipe(gulp.dest(dstCSS));
 });
 
 //SASS文件输出CSS,天生自带压缩特效;
-//命令行使用gulp scss启用此任务;
+//命令行使用gulp sass启用此任务;
 gulp.task('sass', function() {
-    var srcSass = '../src/css/*.scss',
-        dstSass = '../dist/css';
     gulp.src(srcSass)
         .pipe(sass({
             outputStyle: 'compressed'
@@ -45,8 +51,6 @@ gulp.task('sass', function() {
 //图片压缩任务,支持JPEG、PNG及GIF文件;
 //命令行使用gulp jpgmin启用此任务;
 gulp.task('imgmin', function() {
-    var srcImage = '../src/img/*.*',
-        dstImage = '../dist/img';
     var jpgmin = imageminJpegRecompress(),
         pngmin = imageminOptipng({
             optimizationLevel: 3
@@ -62,8 +66,6 @@ gulp.task('imgmin', function() {
 //把所有html页面扔进dist文件夹(不作处理);
 //命令行使用gulp html启用此任务;
 gulp.task('html', function(){
-    var srcHtml = '../src/*.html',
-        dstHtml = '../dist';
     gulp.src(srcHtml)
     .pipe(gulp.dest(dstHtml));
 });
@@ -79,11 +81,11 @@ gulp.task('server', function() {
 //监控改动并自动刷新任务;
 //命令行使用gulp auto启动;
 gulp.task('auto', function() {
-    gulp.watch('../src/js/*.js', ['script']);
-    gulp.watch('../src/css/*.css', ['css']);
-    gulp.watch('../src/css/*.scss', ['sass']);
-    gulp.watch('../src/img/*.*', ['imgmin']);
-    gulp.watch('../src/*.html',['html']);
+    gulp.watch(srcScript, ['script']);
+    gulp.watch(srcCss, ['css']);
+    gulp.watch(srcSass, ['sass']);
+    gulp.watch(srcImage, ['imgmin']);
+    gulp.watch(srcHtml,['html']);
     gulp.watch('../dist/**/*.*').on('change', browserSync.reload);
 });
 
