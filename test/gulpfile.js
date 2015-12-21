@@ -1,26 +1,25 @@
 /*jshint node: true*/
 //引入gulp及各种组件;
-var gulp                    = require('gulp'),
-    uglify                  = require('gulp-uglify'),
-    minifyCSS               = require('gulp-minify-css'),
-    sass                    = require('gulp-sass'),
-    imagemin                = require('gulp-imagemin'),
-    imageminJpegRecompress  = require('imagemin-jpeg-recompress'),
-    imageminOptipng         = require('imagemin-optipng'),
-    imageminGifsicle        = require('imagemin-gifsicle'),
-    browserSync             = require('browser-sync').create();
+var gulp = require('gulp'),
+    uglify = require('gulp-uglify'),
+    minifyCSS = require('gulp-minify-css'),
+    sass = require('gulp-sass'),
+    imagemin = require('gulp-imagemin'),
+    imageminJpegRecompress = require('imagemin-jpeg-recompress'),
+    imageminOptipng = require('imagemin-optipng'),
+    browserSync = require('browser-sync').create();
 
 //设置各种输入输出文件夹的位置;
-var srcScript               = '../src/js/*.js',
-    dstScript               = '../dist/js',
-    srcCss                  = '../src/css/*.css',
-    dstCSS                  = '../dist/css',
-    srcSass                 = '../src/css/*.scss',
-    dstSass                 = '../dist/css',
-    srcImage                = '../src/img/*.*',
-    dstImage                = '../dist/img',
-    srcHtml                 = '../src/*.html',
-    dstHtml                 = '../dist';
+var srcScript = '../src/js/*.js',
+    dstScript = '../dist/js',
+    srcCss = '../src/css/*.css',
+    dstCSS = '../dist/css',
+    srcSass = '../src/css/*.scss',
+    dstSass = '../dist/css',
+    srcImage = '../src/img/*.*',
+    dstImage = '../dist/img',
+    srcHtml = '../src/*.html',
+    dstHtml = '../dist';
 
 //处理JS文件:压缩,然后换个名输出;
 //命令行使用gulp script启用此任务;
@@ -52,19 +51,20 @@ gulp.task('sass', function() {
 //命令行使用gulp jpgmin启用此任务;
 gulp.task('imgmin', function() {
     var jpgmin = imageminJpegRecompress({
-            target: 0.51,
-            min: 45,
-            max: 65,
-            loops: 0,
-            progressive: false
+            accurate: true,//高精度模式
+            quality: "high",//图像质量:low, medium, high and veryhigh;
+            method: "smallfry",//网格优化:mpe, ssim, ms-ssim and smallfry;
+            min: 70,//最低质量
+            loops: 0,//循环尝试次数, 默认为6;
+            progressive: false,//基线优化
+            subsample: "default"//子采样:default, disable;
         }),
         pngmin = imageminOptipng({
-            optimizationLevel: 3
-        }),
-        gifmin = imageminGifsicle();
+            optimizationLevel: 4
+        });
     gulp.src(srcImage)
         .pipe(imagemin({
-            use: [jpgmin, pngmin, gifmin]
+            use: [jpgmin, pngmin]
         }))
         .pipe(gulp.dest(dstImage));
 });
