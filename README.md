@@ -19,17 +19,17 @@ h5autofly
 ---------
 
 
--'gulp'
+- 'gulp'
     执行默认任务, 依次运行[压缩js]、[压缩CSS]、[编译SASS]、[压缩图片]、[复制HTML文件]、[建立调试服务器]等任务后, 自动开启监视刷新任务;
--'gulp script'
+- 'gulp script'
     单独执行[压缩js]任务, 压缩后的文件将移至 dist 内的相应文件夹;
--'gulp css'
+- 'gulp css'
     单独执行[压缩CSS]任务, 压缩后的文件将移至 dist 内的相应文件夹;
--'gulp sass'
+- 'gulp sass'
     单独执行[编译SASS]任务, 压缩后的文件将移至 dist 内的相应文件夹;
--'gulp imgmin'
+- 'gulp imgmin'
     单独执行[压缩图片]任务, 压缩后的文件将移至 dist 内的相应文件夹;
--'gulp server'
+- 'gulp server'
     单独执行[建立调试服务器]任务, 注意执行此任务前须确保 dist 内存在相应文件;
 
 
